@@ -1,7 +1,7 @@
 import type React from "react";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { X } from "lucide-react";
+import { LogOut, X } from "lucide-react";
 import { NavLink, Outlet } from "react-router";
 
 export default function ChatLayout() {
@@ -15,7 +15,7 @@ export default function ChatLayout() {
             <span className="font-semibold">NexTalk</span>
           </div>
         </div>
-        <ScrollArea className="h-[calc(100vh-64px)]">
+        <ScrollArea className="h-[calc(100vh-130px)]">
           <div className="space-y-4 p-4">
             <div className="space-y-1">
               <h3 className="px-2 text-sm font-semibold">Contacts</h3>
@@ -81,6 +81,12 @@ export default function ChatLayout() {
             </div>
           </div>
         </ScrollArea>
+        <div className="p-4 border-t">
+          <Button variant="default" className="w-full text-center">
+            <LogOut className="mr-2 h-4 w-4" />
+            Log out
+          </Button>
+        </div>
       </div>
 
       {/* Main Content */}
