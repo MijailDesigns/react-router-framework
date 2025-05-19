@@ -29,7 +29,7 @@ export default function MyRouteComponent({
       <p>Route Parameters: {JSON.stringify(params)}</p>
       <p>Matched Routes: {JSON.stringify(matches)}</p>
       <NavLink
-        to="/auth/testing-args"
+        to="/auth/testing-args/ABC-123/juan/25"
         className={({ isPending }) =>
           isPending
             ? "btn btn-primary text-red-500 underline"

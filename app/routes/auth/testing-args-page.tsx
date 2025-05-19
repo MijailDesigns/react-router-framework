@@ -42,7 +42,13 @@ export function links() {
   ];
 }
 
-export async function clientLoader() {
+export async function loader({ params }: Route.LoaderArgs) {
+  console.log({ params });
+  return { hola: " mundo" };
+}
+
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  console.log({ params });
   await sleep(1500);
   return { hola: " mundo" };
 }
@@ -57,12 +63,15 @@ export function HydrateFallback() {
   );
 }
 
+clientLoader.hydrate = true; // para que funcione el hydrate con el loader
 export default function TestingArgsPage({
   loaderData,
   actionData,
   params,
   matches,
 }: Route.ComponentProps) {
+  const { id, name, age } = params;
+  console.log({ id, name, age });
   return (
     <div>
       <h1>Testing Args page</h1>
