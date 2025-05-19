@@ -1,5 +1,27 @@
-import { Link, NavLink } from "react-router";
+import { Form, Link, NavLink } from "react-router";
 import type { Route } from "./+types/testing-page";
+import { sleep } from "~/lib/sleep";
+
+export async function action({ request }: Route.ActionArgs) {
+  await sleep(1000);
+  const data = await request.formData();
+  const name = data.get("name");
+  const allData = Object.fromEntries(data);
+  console.log("Server side - action");
+  console.log({ name, allData });
+  return { ok: true, message: "todo bien desde el server" };
+}
+
+export async function clientAction({
+  serverAction,
+  request,
+}: Route.ClientActionArgs) {
+  await sleep(1000);
+  const formData = await request.clone().formData();
+  const allData = Object.fromEntries(formData);
+  const data = await serverAction();
+  return { message: "desde el lado de el server cliente", data, allData };
+}
 
 export async function loader() {
   console.log("loader server");
@@ -38,6 +60,22 @@ export default function MyRouteComponent({
       >
         Testing args
       </NavLink>
+
+      <Form className="flex gap-2" action="/auth/testing" method="post">
+        <input
+          className="border-2 border-gray-300 rounded-md p-2"
+          type="text"
+          name="name"
+        />
+        <input
+          className="border-2 border-gray-300 rounded-md p-2"
+          type="text"
+          name="age"
+        />
+        <button className="bg-blue-500 rounded-md p-2" type="submit">
+          Submit
+        </button>
+      </Form>
     </div>
   );
 }
