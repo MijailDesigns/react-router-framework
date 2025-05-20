@@ -8,7 +8,11 @@ import { Copy, Download, ThumbsUp, ThumbsDown, Send } from "lucide-react";
 import type { Route } from "./+types/client-chat-page";
 import { getClientMessages, sendMessage } from "~/fake/fake-data";
 import { formatDate } from "~/lib/data-formatter";
-import { Form } from "react-router";
+import { Form, type ShouldRevalidateFunctionArgs } from "react-router";
+
+// export function shouldRevalidate(arg: ShouldRevalidateFunctionArgs) {
+//   return false;
+// }
 
 export async function loader({ params }: Route.LoaderArgs) {
   const { id } = params;
