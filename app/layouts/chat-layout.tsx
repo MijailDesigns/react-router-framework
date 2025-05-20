@@ -5,7 +5,6 @@ import { LogOut, X } from "lucide-react";
 import { Form, Link, Outlet, redirect } from "react-router";
 import ContactList from "~/chat/components/ContactList";
 import ContactInformationCard from "~/chat/components/contact-information-card/ContactInformationCard";
-import { get } from "http";
 import { getClients } from "~/fake/fake-data";
 import type { Route } from "./+types/chat-layout";
 import { getSession } from "~/session.server";
