@@ -71,6 +71,7 @@ export default function ChatLayout({ loaderData }: Route.ComponentProps) {
           <div className="h-14 border-b px-4 flex items-center">
             <h2 className="font-medium">Contact details</h2>
           </div>
+
           <ContactInformationCard />
         </div>
       </div>
