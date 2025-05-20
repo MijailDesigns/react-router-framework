@@ -1,5 +1,5 @@
 import { Label } from "@radix-ui/react-label";
-import React from "react";
+import React, { use, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
@@ -34,11 +34,22 @@ export async function action({ request }: Route.ActionArgs) {
 
   if (email === "algo@gmail.com") {
     session.flash("error", "invalid email");
-    return redirect("/auth/login?error=invalid email", {
-      headers: {
-        "Set-Cookie": await commitSession(session),
-      },
-    });
+    // return redirect("/auth/login?error=invalid email", {
+    //   headers: {
+    //     "Set-Cookie": await commitSession(session),
+    //   },
+    // });
+
+    return data(
+      { error: "Invalid email!!!" },
+      {
+        headers: {
+          "Set-Cookie": await commitSession(session),
+        },
+        status: 400,
+        statusText: "Bad request",
+      }
+    );
   }
 
   session.set("userId", "U1-12345");
@@ -51,12 +62,20 @@ export async function action({ request }: Route.ActionArgs) {
   });
 }
 
-const LoginPage = () => {
+const LoginPage = ({ actionData }: Route.ComponentProps) => {
   const navigate = useNavigate();
+
+  console.log("actionData", actionData);
 
   const onAppleSignIn = () => {
     navigate("/auth/testing");
   };
+
+  useEffect(() => {
+    if (actionData?.error) {
+      alert(actionData.error);
+    }
+  }, [actionData]);
 
   return (
     <div className="flex flex-col gap-6">
