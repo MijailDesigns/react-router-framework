@@ -10,7 +10,7 @@ export const loginUser = async () => {
   await sleep(1200);
   return {
     id: "U1-12345",
-    name: "Fernando Herrera",
+    name: "Mijail Pulgar",
     email: "fherrera@gmail.com",
     token: "token-1234567890",
   };

@@ -7,6 +7,7 @@ import placeholder from "~/assets/images/placeholder.svg";
 import { data, Form, Link, redirect, useNavigate } from "react-router";
 import { commitSession, getSession } from "~/session.server";
 import type { Route } from "./+types/login-page";
+import { loginUser } from "~/fake/fake-data";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -52,8 +53,20 @@ export async function action({ request }: Route.ActionArgs) {
     );
   }
 
-  session.set("userId", "U1-12345");
-  session.set("token", 'token: "token-1234567890",');
+  const user = await loginUser();
+
+  if (!user) {
+    session.flash("error", "invalid email or password");
+    return redirect("/auth/login?error=invalid email or password", {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    });
+  }
+
+  session.set("userId", user.id);
+  session.set("token", user.token);
+  session.set("name", user.name);
 
   return redirect("/chat", {
     headers: {

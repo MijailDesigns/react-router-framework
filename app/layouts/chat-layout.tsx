@@ -2,7 +2,7 @@ import type React from "react";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { LogOut, X } from "lucide-react";
-import { Form, Outlet, redirect } from "react-router";
+import { Form, Link, Outlet, redirect } from "react-router";
 import ContactList from "~/chat/components/ContactList";
 import ContactInformationCard from "~/chat/components/contact-information-card/ContactInformationCard";
 import { get } from "http";
@@ -13,16 +13,18 @@ import { getSession } from "~/session.server";
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
 
+  const userName = session.get("name");
+
   if (!session.has("userId")) {
     return redirect("/auth/login");
   }
 
   const clients = await getClients();
-  return { clients };
+  return { clients, userName };
 }
 
 export default function ChatLayout({ loaderData }: Route.ComponentProps) {
-  const { clients } = loaderData;
+  const { clients, userName } = loaderData;
   return (
     <div className="flex h-screen bg-background">
       {/* Sidebar */}
@@ -30,10 +32,14 @@ export default function ChatLayout({ loaderData }: Route.ComponentProps) {
         <div className="p-4 border-b">
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 rounded-full bg-primary" />
-            <span className="font-semibold">NexTalk</span>
+            <Link to="/chat" className="font-semibold">
+              {userName}
+            </Link>
           </div>
         </div>
+
         <ContactList clients={clients} />
+
         <Form method="post" action="/auth/logout" className="p-4 border-t">
           <Button variant="default" className="w-full text-center">
             <LogOut className="mr-2 h-4 w-4" />
